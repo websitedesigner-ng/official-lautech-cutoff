@@ -303,7 +303,7 @@ export default function App() {
             <p className="text-[11px] text-gray-400">
               <a href="tel:+2349063901272"
                 className="font-semibold text-[#CC1B1B] hover:underline">
-                BJ of LAUTECH
+                BJ OF LAUTECH
               </a>
               {" · "}
               <a href="tel:+2349063901272"

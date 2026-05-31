@@ -65,8 +65,8 @@ export function ScoreRing({ score, jambPoints, olevelPoints }: ScoreRingProps) {
 
       {/* breakdown bars */}
       <div className="w-full space-y-3 px-2">
-        <BreakdownBar label="JAMB (75%)" value={jambPoints} max={75} color="#CC1B1B" />
-        <BreakdownBar label="O'Level (25%)" value={olevelPoints} max={25} color="#C8A84B" />
+        <BreakdownBar label="JAMB (80%)" value={jambPoints} max={80} color="#CC1B1B" />
+        <BreakdownBar label="O'Level (20%)" value={olevelPoints} max={20} color="#C8A84B" />
       </div>
     </div>
   );
