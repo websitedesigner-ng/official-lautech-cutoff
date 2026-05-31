@@ -3,20 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  ChevronRight,
-  ChevronLeft,
-  GraduationCap,
-  BookOpen,
-  Users,
-  ClipboardList,
-  FileText,
+  ChevronRight, ChevronLeft, GraduationCap,
+  BookOpen, Users, ClipboardList, FileText,
 } from "lucide-react";
 import {
-  courses,
-  gradeOptions,
-  fieldLabels,
-  fieldSubjects,
-  type Field,
+  courses, gradeOptions, fieldLabels, fieldSubjects,
+  MIN_JAMB, type Field,
 } from "@/data/courses";
 import { useCalculator } from "@/hooks/useCalculator";
 import { Loader } from "@/components/Loader";
@@ -30,23 +22,28 @@ const STEPS = [
 ];
 
 export default function App() {
-  const [step, setStep]                   = useState(0);
-  const [field, setField]                 = useState<Field | "">("");
-  const [indigene, setIndigene]           = useState<"indigene" | "nonIndigene" | "">("");
+  const [step, setStep]                     = useState(0);
+  const [field, setField]                   = useState<Field | "">("");
+  const [indigene, setIndigene]             = useState<"indigene" | "nonIndigene" | "">("");
   const [selectedCourse, setSelectedCourse] = useState<string>("");
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [showResult, setShowResult]       = useState(false);
+  const [isCalculating, setIsCalculating]   = useState(false);
+  const [showResult, setShowResult]         = useState(false);
 
   const calc = useCalculator();
 
   const filteredCourses = field ? courses.filter((c) => c.field === field) : [];
   const courseObj       = courses.find((c) => c.name === selectedCourse) ?? null;
-  const subjects        = field ? fieldSubjects[field as Field] : ["Subject 1","Subject 2","Subject 3","Subject 4","Subject 5"];
+  const subjects        = field
+    ? fieldSubjects[field as Field]
+    : ["Subject 1", "Subject 2", "Subject 3", "Subject 4", "Subject 5"];
+
+  const jambVal = parseFloat(calc.jambScore);
+  const jambValid = !isNaN(jambVal) && jambVal >= MIN_JAMB && jambVal <= 400;
 
   const canProceed = [
     field !== "" && indigene !== "",
     selectedCourse !== "",
-    calc.jambScore !== "" && parseFloat(calc.jambScore) >= 100 && parseFloat(calc.jambScore) <= 400,
+    jambValid,
     calc.grades.every((g) => g !== ""),
     true,
   ][step];
@@ -70,11 +67,8 @@ export default function App() {
   };
 
   const handleReset = () => {
-    setStep(0);
-    setField("");
-    setIndigene("");
-    setSelectedCourse("");
-    setShowResult(false);
+    setStep(0); setField(""); setIndigene("");
+    setSelectedCourse(""); setShowResult(false);
     calc.resetAll();
   };
 
@@ -97,14 +91,16 @@ export default function App() {
         </div>
       </header>
 
-      {/* ── Scrollable content ── */}
+      {/* ── Scrollable body ── */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-lg mx-auto px-4 pt-5 pb-4 space-y-4">
 
           {/* Warning */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex gap-2">
             <span className="text-amber-500 shrink-0 mt-0.5">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+              </svg>
             </span>
             <p className="text-xs text-amber-800 leading-relaxed">
               <span className="font-bold">PROTECT YOURSELF:</span> LAUTECH admission cannot be
@@ -112,7 +108,7 @@ export default function App() {
             </p>
           </div>
 
-          {/* Step indicator */}
+          {/* Step progress */}
           {step < 4 && (
             <div className="space-y-2">
               <div className="flex justify-between text-xs text-gray-400 font-medium">
@@ -128,7 +124,7 @@ export default function App() {
             </div>
           )}
 
-          {/* ── Step content ── */}
+          {/* ── Animated content ── */}
           <AnimatePresence mode="wait">
             {isCalculating ? (
               <motion.div key="loader"
@@ -141,7 +137,7 @@ export default function App() {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.28, ease: "easeOut" }}>
 
-                {/* ── STEP 0: Field & Status ── */}
+                {/* STEP 0 */}
                 {step === 0 && (
                   <div className="space-y-4">
                     <StepCard icon={<GraduationCap size={18} />} title="Field of Study"
@@ -149,7 +145,7 @@ export default function App() {
                       <div className="grid grid-cols-3 gap-2 mt-4">
                         {(["science","commercial","art"] as Field[]).map((f) => (
                           <button key={f}
-                            onClick={() => { setField(f); setSelectedCourse(""); calc.grades.forEach((_,i) => calc.setGrade(i,"")); }}
+                            onClick={() => { setField(f); setSelectedCourse(""); calc.resetAll(); }}
                             className={`py-3.5 px-2 rounded-xl text-sm font-semibold border-2 transition-all duration-200 ${
                               field === f
                                 ? "border-[#CC1B1B] bg-[#CC1B1B] text-white shadow-md"
@@ -183,7 +179,7 @@ export default function App() {
                   </div>
                 )}
 
-                {/* ── STEP 1: Course ── */}
+                {/* STEP 1 */}
                 {step === 1 && (
                   <StepCard icon={<BookOpen size={18} />} title="Select Your Course"
                     subtitle={`${filteredCourses.length} courses in ${fieldLabels[field as Field]}`}>
@@ -197,15 +193,13 @@ export default function App() {
                           }`}>
                           <div className="flex justify-between items-center gap-2">
                             <span>{c.name}</span>
-                            {indigene && (
-                              <span className={`text-xs font-bold shrink-0 px-2 py-0.5 rounded-full ${
-                                selectedCourse === c.name
-                                  ? "bg-[#CC1B1B]/10 text-[#CC1B1B]"
-                                  : "bg-gray-100 text-gray-400"
-                              }`}>
-                                {c.cutoff[indigene as "indigene"|"nonIndigene"]}%
-                              </span>
-                            )}
+                            <span className={`text-xs font-bold shrink-0 px-2 py-0.5 rounded-full ${
+                              selectedCourse === c.name
+                                ? "bg-[#CC1B1B]/10 text-[#CC1B1B]"
+                                : "bg-gray-100 text-gray-400"
+                            }`}>
+                              {c.utmeCutoff}
+                            </span>
                           </div>
                         </button>
                       ))}
@@ -213,42 +207,49 @@ export default function App() {
                   </StepCard>
                 )}
 
-                {/* ── STEP 2: JAMB ── */}
+                {/* STEP 2 */}
                 {step === 2 && (
                   <StepCard icon={<ClipboardList size={18} />} title="JAMB Score"
-                    subtitle="Enter your UTME result (100 – 400)">
-                    <div className="mt-6 space-y-4">
+                    subtitle={`Minimum score for LAUTECH screening is ${MIN_JAMB}`}>
+                    <div className="mt-6 space-y-3">
                       <input
-                        type="number" min={100} max={400}
+                        type="number" min={MIN_JAMB} max={400}
                         value={calc.jambScore}
                         onChange={(e) => calc.setJambScore(e.target.value)}
-                        placeholder="e.g. 280"
+                        placeholder="e.g. 220"
                         className="w-full text-center text-5xl font-bold text-gray-800 border-2 border-gray-200 rounded-2xl py-7 focus:outline-none focus:border-[#CC1B1B] transition-colors bg-white placeholder:text-gray-200"
                       />
-                      <p className="text-center text-xs text-gray-400">
-                        Enter a score between 100 and 400
-                      </p>
+                      {calc.jambScore && !jambValid && (
+                        <p className="text-center text-xs text-red-500 font-medium">
+                          {jambVal < MIN_JAMB
+                            ? `Score must be at least ${MIN_JAMB} to qualify for LAUTECH screening`
+                            : "Score cannot exceed 400"}
+                        </p>
+                      )}
+                      {!calc.jambScore && (
+                        <p className="text-center text-xs text-gray-400">
+                          Enter a score between {MIN_JAMB} and 400
+                        </p>
+                      )}
                     </div>
                   </StepCard>
                 )}
 
-                {/* ── STEP 3: O'Level ── */}
+                {/* STEP 3 */}
                 {step === 3 && (
                   <StepCard icon={<FileText size={18} />} title="O'Level Grades"
-                    subtitle="Select your grade for each subject">
+                    subtitle="Select your credit grade for each subject (C6 minimum)">
                     <div className="mt-4 space-y-4">
                       {subjects.map((subject, i) => (
                         <div key={i}>
                           <p className="text-xs font-semibold text-gray-500 mb-2">{subject}</p>
-                          <div className="grid grid-cols-9 gap-1">
+                          <div className="grid grid-cols-6 gap-1.5">
                             {gradeOptions.map((grade) => (
                               <button key={grade}
                                 onClick={() => calc.setGrade(i, grade)}
-                                className={`py-2.5 rounded-lg text-xs font-bold border transition-all duration-150 ${
+                                className={`py-3 rounded-xl text-xs font-bold border-2 transition-all duration-150 ${
                                   calc.grades[i] === grade
-                                    ? grade === "D7" || grade === "E8" || grade === "F9"
-                                      ? "bg-red-500 border-red-500 text-white"
-                                      : "bg-[#CC1B1B] border-[#CC1B1B] text-white shadow-sm"
+                                    ? "bg-[#CC1B1B] border-[#CC1B1B] text-white shadow-sm"
                                     : "bg-white border-gray-200 text-gray-500 hover:border-gray-300"
                                 }`}>
                                 {grade}
@@ -261,7 +262,7 @@ export default function App() {
                   </StepCard>
                 )}
 
-                {/* ── STEP 4: Result ── */}
+                {/* STEP 4 */}
                 {step === 4 && showResult && (
                   <ResultCard
                     aggregate={calc.aggregate}
@@ -270,7 +271,7 @@ export default function App() {
                     jambScore={calc.jambScore}
                     olevelSum={calc.olevelSum}
                     course={courseObj}
-                    indigene={indigene as "indigene"|"nonIndigene"}
+                    field={field as Field}
                     allCourses={courses}
                     onReset={handleReset}
                   />
@@ -282,10 +283,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Sticky bottom nav ── */}
+      {/* ── Sticky bottom — nav + BJ credit in one seamless block ── */}
       {step < 4 && !isCalculating && (
         <div className="sticky bottom-0 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-          <div className="max-w-lg mx-auto px-4 py-4 flex gap-3">
+          <div className="max-w-lg mx-auto px-4 pt-4 pb-2 flex gap-3">
             {step > 0 && (
               <Button variant="outline" onClick={handleBack}
                 className="gap-2 border-gray-200 text-gray-500 py-6 px-5 rounded-xl text-sm font-semibold">
@@ -298,18 +299,23 @@ export default function App() {
               <ChevronRight size={17} />
             </Button>
           </div>
+          <div className="max-w-lg mx-auto px-4 pb-3 text-center mt-4">
+            <p className="text-[11px] text-gray-400">
+              <a href="tel:+2349063901272"
+                className="font-semibold text-[#CC1B1B] hover:underline">
+                BJ of LAUTECH
+              </a>
+              {" · "}
+              <a href="tel:+2349063901272"
+                className="text-gray-400 hover:text-[#CC1B1B] transition-colors">
+                +234 906 390 1272
+              </a>
+            </p>
+          </div>
         </div>
       )}
 
-      {/* Footer — only on result */}
-      {step === 4 && (
-        <div className="max-w-lg mx-auto px-4 py-6 text-center">
-          <p className="text-xs text-gray-400">Ladoke Akintola University of Technology, Ogbomoso</p>
-          <p className="text-xs text-gray-300 mt-0.5 font-medium tracking-wide">
-            Excellence · Integrity · Service
-          </p>
-        </div>
-      )}
+      {/* On result page, BJ credit lives inside the scrollable content — handled in ResultCard */}
     </div>
   );
 }
