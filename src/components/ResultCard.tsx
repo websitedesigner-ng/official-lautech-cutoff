@@ -210,7 +210,7 @@ export function ResultCard({
       {/* BJ Credit */}
       <div className="text-center pb-2 pt-1 space-y-0.5">
         <p className="text-[11px] text-gray-400">
-          <a href="tel:+2349063901272" className="font-semibold text-[#CC1B1B] hover:underline">
+          <a href="tel:+2349063901272" className="font-semibold text-[#CC1B1B] hover:underline tracking-wide">
             BJ OF LAUTECH
           </a>
           {" · "}

@@ -7,7 +7,7 @@ import {
   BookOpen, Users, ClipboardList, FileText,
 } from "lucide-react";
 import {
-  courses, gradeOptions, fieldLabels, fieldSubjects,
+  courses, gradeOptions, fieldLabels,
   MIN_JAMB, type Field,
 } from "@/data/courses";
 import { useCalculator } from "@/hooks/useCalculator";
@@ -33,9 +33,7 @@ export default function App() {
 
   const filteredCourses = field ? courses.filter((c) => c.field === field) : [];
   const courseObj       = courses.find((c) => c.name === selectedCourse) ?? null;
-  const subjects        = field
-    ? fieldSubjects[field as Field]
-    : ["Subject 1", "Subject 2", "Subject 3", "Subject 4", "Subject 5"];
+  const subjects        = courseObj?.olevelSubjects ?? ["Subject 1", "Subject 2", "Subject 3", "Subject 4", "Subject 5"];
 
   const jambVal = parseFloat(calc.jambScore);
   const jambValid = !isNaN(jambVal) && jambVal >= MIN_JAMB && jambVal <= 400;
@@ -238,8 +236,18 @@ export default function App() {
                 {/* STEP 3 */}
                 {step === 3 && (
                   <StepCard icon={<FileText size={18} />} title="O'Level Grades"
-                    subtitle="Select your credit grade for each subject (C6 minimum)">
+                    subtitle={`Required subjects for ${courseObj?.name ?? "your course"}`}>
                     <div className="mt-4 space-y-4">
+                      {courseObj?.olevelNote && (
+                        <div className="bg-red-50 border border-red-200 rounded-xl px-3 py-2.5 flex gap-2 items-center">
+                          <span className="text-red-500 shrink-0">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                            </svg>
+                          </span>
+                          <p className="text-xs font-bold text-red-700">{courseObj.olevelNote}</p>
+                        </div>
+                      )}
                       {subjects.map((subject, i) => (
                         <div key={i}>
                           <p className="text-xs font-semibold text-gray-500 mb-2">{subject}</p>
@@ -299,10 +307,10 @@ export default function App() {
               <ChevronRight size={17} />
             </Button>
           </div>
-          <div className="max-w-lg mx-auto px-4 pb-3 text-center mt-4">
+          <div className="max-w-lg mx-auto px-4 pb-3 text-center">
             <p className="text-[11px] text-gray-400">
               <a href="tel:+2349063901272"
-                className="font-semibold text-[#CC1B1B] hover:underline">
+                className="font-semibold text-[#CC1B1B] hover:underline tracking-wide">
                 BJ OF LAUTECH
               </a>
               {" · "}
