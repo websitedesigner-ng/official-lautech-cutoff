@@ -13,6 +13,7 @@ import {
 import { useCalculator } from "@/hooks/useCalculator";
 import { Loader } from "@/components/Loader";
 import { ResultCard } from "@/components/ResultCard";
+import { SplashScreen } from "@/components/SplashScreen";
 
 const STEPS = [
   { label: "Field & Status", icon: <Users size={14} /> },
@@ -22,6 +23,7 @@ const STEPS = [
 ];
 
 export default function App() {
+  const [showSplash, setShowSplash]         = useState(true);
   const [step, setStep]                     = useState(0);
   const [field, setField]                   = useState<Field | "">("");
   const [indigene, setIndigene]             = useState<"indigene" | "nonIndigene" | "">("");
@@ -72,6 +74,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
+      <div className={showSplash ? "invisible" : "contents"}>
 
       {/* ── Header ── */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-20 shadow-sm">
@@ -324,6 +328,7 @@ export default function App() {
       )}
 
       {/* On result page, BJ credit lives inside the scrollable content — handled in ResultCard */}
+      </div>
     </div>
   );
 }
