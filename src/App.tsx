@@ -284,6 +284,7 @@ export default function App() {
                     olevelSum={calc.olevelSum}
                     course={courseObj}
                     field={field as Field}
+                    indigene={indigene as "indigene" | "nonIndigene"}
                     allCourses={courses}
                     onReset={handleReset}
                   />

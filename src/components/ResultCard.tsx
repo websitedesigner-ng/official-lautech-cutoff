@@ -16,6 +16,7 @@ interface ResultCardProps {
   olevelSum: number;
   course: Course | null;
   field: Field;
+  indigene: "indigene" | "nonIndigene";
   allCourses: Course[];
   onReset: () => void;
 }
@@ -24,25 +25,35 @@ const WA_GROUP = "https://chat.whatsapp.com/LRQvKF8yzfz2flbXpDP4tS?mode=gi_t";
 
 export function ResultCard({
   aggregate, jambPoints, olevelPoints,
-  jambScore, olevelSum, course, field, allCourses, onReset,
+  jambScore, olevelSum, course, field, indigene, allCourses, onReset,
 }: ResultCardProps) {
 
-  const cutoff = course ? course.utmeCutoff : null;
-  const jambVal = parseFloat(jambScore);
-  const passedJamb = cutoff !== null ? jambVal >= cutoff : null;
+  const isIndigene = indigene === "indigene";
 
-  // Filter to same field only
+  // Use catchment cutoff for Oyo indigenes, merit for others
+  const getRelevantCutoff = (c: Course) =>
+    isIndigene ? c.catchmentCutoff : c.meritCutoff;
+
+  const cutoff = course ? getRelevantCutoff(course) : null;
+  const jambVal = parseFloat(jambScore);
+  const jambOk = course ? jambVal >= course.utmeCutoff : false;
+  const aggregateOk = cutoff !== null ? aggregate >= cutoff : false;
+  const fullyEligible = jambOk && aggregateOk;
+
+  // Filter same field only
   const sameField = allCourses.filter((c) => c.field === field);
 
   const eligibleCourses = sameField
-    .filter((c) => jambVal >= c.utmeCutoff)
-    .sort((a, b) => b.utmeCutoff - a.utmeCutoff)
+    .filter((c) => jambVal >= c.utmeCutoff && aggregate >= getRelevantCutoff(c))
+    .sort((a, b) => getRelevantCutoff(b) - getRelevantCutoff(a))
     .slice(0, 5);
 
   const nearMissCourses = sameField
-    .filter((c) => jambVal < c.utmeCutoff)
-    .sort((a, b) => a.utmeCutoff - b.utmeCutoff)
+    .filter((c) => !(jambVal >= c.utmeCutoff && aggregate >= getRelevantCutoff(c)))
+    .sort((a, b) => getRelevantCutoff(a) - getRelevantCutoff(b))
     .slice(0, 5);
+
+  const statusLabel = isIndigene ? "Catchment (Oyo Indigene)" : "Merit (Non-Indigene)";
 
   const resultText =
     `🎓 My LAUTECH Screening Score\n\n` +
@@ -50,11 +61,11 @@ export function ResultCard({
     `JAMB (${jambScore}): ${jambPoints.toFixed(2)} pts\n` +
     `O'Level (${olevelSum}/30): ${olevelPoints.toFixed(2)} pts\n` +
     (course
-      ? `\nCourse: ${course.name}\nJAMB Cut-off: ${cutoff}\nStatus: ${passedJamb ? "✅ ELIGIBLE" : "❌ BELOW CUT-OFF"}\n`
+      ? `\nCourse: ${course.name}\nCut-off (${statusLabel}): ${cutoff}\nStatus: ${fullyEligible ? "✅ ELIGIBLE" : "❌ NOT ELIGIBLE"}\n`
       : "") +
     `\nCalculate yours 👇\nhttps://lautech.bolu.fun\n\n` +
     `Join LAUTECH Aspirants Group:\n${WA_GROUP}\n\n` +
-    `— Built by BJ of LAUTECH · +234 906 390 1272`;
+    `— BJ OF LAUTECH · +234 906 390 1272`;
 
   const handleCopy  = () => navigator.clipboard.writeText(resultText);
   const handleShare = () => window.open(`https://wa.me/?text=${encodeURIComponent(resultText)}`, "_blank");
@@ -70,8 +81,6 @@ export function ResultCard({
           Your Screening Aggregate
         </p>
         <ScoreRing score={aggregate} jambPoints={jambPoints} olevelPoints={olevelPoints} />
-
-        {/* Formula note */}
         <div className="mt-5 bg-gray-50 rounded-xl p-3 flex gap-2">
           <Info size={13} className="text-gray-400 shrink-0 mt-0.5" />
           <p className="text-xs text-gray-400 leading-relaxed">
@@ -86,33 +95,41 @@ export function ResultCard({
       {course && cutoff !== null && (
         <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className={`rounded-2xl border-2 p-5 ${passedJamb ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}>
+          className={`rounded-2xl border-2 p-5 ${fullyEligible ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}>
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                 Your Chosen Course
               </p>
               <p className="text-sm font-bold text-gray-800 leading-snug">{course.name}</p>
-              <p className="text-xs text-gray-500 mt-1.5">
-                JAMB Cut-off: <span className="font-bold text-gray-700">{cutoff}</span>
-                {" · "}Your JAMB: <span className="font-bold text-gray-700">{jambScore}</span>
-              </p>
-              {!passedJamb && (
-                <p className="text-xs text-red-600 mt-1.5 font-semibold">
-                  You need {cutoff - jambVal} more JAMB marks for this course.
+
+              <div className="mt-2 space-y-1">
+                <p className="text-xs text-gray-500">
+                  Aggregate Cut-off <span className="text-gray-400">({statusLabel})</span>:{" "}
+                  <span className="font-bold text-gray-700">{cutoff}%</span>
+                  {" · "}Yours: <span className={`font-bold ${aggregateOk ? "text-green-700" : "text-red-600"}`}>{aggregate.toFixed(2)}%</span>
+                  {" "}
+                  {aggregateOk
+                    ? <span className="text-green-600 text-xs">✓</span>
+                    : <span className="text-red-500 text-xs">✗ Need {(cutoff - aggregate).toFixed(2)} more</span>}
                 </p>
-              )}
-              <p className="text-xs text-gray-400 mt-2 leading-relaxed">
-                <span className="font-semibold">UTME Subjects:</span> {course.utmeSubjects}
-              </p>
+              </div>
             </div>
             <div className={`flex items-center gap-1.5 shrink-0 px-3 py-2 rounded-xl font-bold text-xs ${
-              passedJamb ? "bg-green-600 text-white" : "bg-red-600 text-white"
+              fullyEligible ? "bg-green-600 text-white" : "bg-red-600 text-white"
             }`}>
-              {passedJamb
+              {fullyEligible
                 ? <><CheckCircle2 size={13} /> Eligible</>
                 : <><XCircle size={13} /> Not Eligible</>}
             </div>
+          </div>
+
+          {/* UTME subjects reminder */}
+          <div className="mt-3 pt-3 border-t border-gray-200/60">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              <span className="font-semibold text-gray-500">UTME Subjects:</span>{" "}
+              {course.utmeSubjects}
+            </p>
           </div>
         </motion.div>
       )}
@@ -133,12 +150,13 @@ export function ResultCard({
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 + idx * 0.07 }}
                 className="flex items-center justify-between px-3 py-3 bg-green-50 rounded-xl border border-green-100">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-700 truncate">{c.name}</p>
+                <p className="text-sm font-semibold text-gray-700 truncate flex-1">{c.name}</p>
+                <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                  <span className="text-xs text-gray-400">cutoff</span>
+                  <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
+                    {getRelevantCutoff(c)}%
+                  </span>
                 </div>
-                <span className="text-xs font-bold text-green-700 shrink-0 ml-2 bg-green-100 px-2 py-0.5 rounded-full">
-                  {c.utmeCutoff} JAMB
-                </span>
               </motion.div>
             ))}
           </div>
@@ -153,32 +171,40 @@ export function ResultCard({
             <h3 className="text-sm font-bold text-gray-800">Almost There — Next Courses</h3>
           </div>
           <div className="space-y-2">
-            {nearMissCourses.map((c, idx) => (
-              <motion.div key={c.name}
-                initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 + idx * 0.07 }}
-                className="flex items-center justify-between px-3 py-3 bg-amber-50 rounded-xl border border-amber-100">
-                <p className="text-sm font-medium text-gray-700 truncate flex-1">{c.name}</p>
-                <div className="flex items-center gap-2 shrink-0 ml-2">
-                  <span className="text-xs text-red-500 font-semibold">
-                    +{c.utmeCutoff - jambVal} needed
-                  </span>
-                  <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
-                    {c.utmeCutoff} JAMB
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            {nearMissCourses.map((c, idx) => {
+              const needed = getRelevantCutoff(c);
+              const diff = (needed - aggregate).toFixed(2);
+              const jambShort = jambVal < c.utmeCutoff;
+              return (
+                <motion.div key={c.name}
+                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + idx * 0.07 }}
+                  className="px-3 py-3 bg-amber-50 rounded-xl border border-amber-100">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-gray-700 truncate flex-1">{c.name}</p>
+                    <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full shrink-0">
+                      {needed}%
+                    </span>
+                  </div>
+                  <p className="text-xs text-red-500 font-medium mt-1">
+                    {jambShort
+                      ? `JAMB too low — need ${c.utmeCutoff} (yours: ${jambVal})`
+                      : `+${diff} aggregate needed`}
+                  </p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Important note */}
+      {/* Note */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <p className="text-xs text-amber-800 leading-relaxed">
-          <span className="font-bold">Important:</span> Meeting the JAMB cut-off does{" "}
-          <span className="font-bold">NOT</span> guarantee admission. Your O'Level subject
-          combinations must also match the course requirements. Always verify on JAMB CAPS.
+          <span className="font-bold">Note:</span> Cut-offs are based on{" "}
+          <span className="font-bold">2024/2025 departmental scores</span> and may change for
+          2025/2026. Meeting cut-offs does <span className="font-bold">NOT</span> guarantee
+          admission — O'Level subject combinations must also match. Verify on JAMB CAPS.
         </p>
       </div>
 
