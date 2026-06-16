@@ -3,9 +3,9 @@ export type Field = "science" | "commercial" | "art";
 export interface Course {
   name: string;
   field: Field;
-  utmeCutoff: number;       // min JAMB score to apply
-  meritCutoff: number;      // aggregate cut-off (merit)
-  catchmentCutoff: number;  // aggregate cut-off (catchment/indigene)
+  utmeCutoff: number;
+  meritCutoff: number;
+  catchmentCutoff: number;
   olevelSubjects: string[];
   olevelNote?: string;
   utmeSubjects: string;
@@ -17,7 +17,7 @@ export const courses: Course[] = [
   {
     name: "Accounting",
     field: "commercial",
-    utmeCutoff: 200,
+    utmeCutoff: 180,
     meritCutoff: 61.9,
     catchmentCutoff: 52.7,
     olevelSubjects: ["English Language", "Mathematics", "Financial Accounting", "Economics / Commerce / Marketing", "Government / Geography"],
@@ -26,10 +26,10 @@ export const courses: Course[] = [
   {
     name: "Business Administration",
     field: "commercial",
-    utmeCutoff: 180,
+    utmeCutoff: 175,
     meritCutoff: 57.3,
     catchmentCutoff: 46.3,
-    olevelSubjects: ["English Language", "Mathematics", "Economics", "Accounting / Commerce / Marketing / Government", "Geography / Biology / Physics / Chemistry / Agric Science"],
+    olevelSubjects: ["English Language", "Mathematics", "Economics", "Accounting / Commerce / Marketing / Government / Civic Education", "Geography / Biology / Physics / Chemistry / Agric Science"],
     utmeSubjects: "English, Mathematics, Economics + 1 from Geography/Accounting/Marketing/Commerce/Government",
   },
   {
@@ -38,8 +38,8 @@ export const courses: Course[] = [
     utmeCutoff: 180,
     meritCutoff: 52.1,
     catchmentCutoff: 41.6,
-    olevelSubjects: ["English Language", "Mathematics", "Economics", "Government / Geography / Commerce / Business Method", "Accounting / Marketing / Civic Education"],
-    utmeSubjects: "English, Mathematics, Economics + 1 from Geography/Accounting/Marketing/Commerce",
+    olevelSubjects: ["English Language", "Mathematics", "Economics", "Government / Geography / Commerce / Business Method / Accounting / Marketing", "Civil Education / Any Social Science"],
+    utmeSubjects: "English, Mathematics, Economics + any Social Sciences subject",
   },
   {
     name: "Estate Management",
@@ -53,19 +53,19 @@ export const courses: Course[] = [
   {
     name: "Hospitality and Tourism Management",
     field: "commercial",
-    utmeCutoff: 180,
+    utmeCutoff: 170,
     meritCutoff: 43.2,
     catchmentCutoff: 40.0,
     olevelSubjects: ["English Language", "Mathematics", "Biology / Agricultural Science / Chemistry / Physics", "Economics / Geography / Home Economics", "Food & Nutrition / Tourism"],
-    utmeSubjects: "English + 3 from Science or Social Science subjects",
+    utmeSubjects: "English + 1 from Science (Chemistry/Biology/Physics/Mathematics) + 1 from Social Science (Economics/Geography/Home Economics)",
   },
   {
     name: "Marketing",
     field: "commercial",
-    utmeCutoff: 180,
+    utmeCutoff: 170,
     meritCutoff: 49.4,
     catchmentCutoff: 40.6,
-    olevelSubjects: ["English Language", "Mathematics", "Economics", "Marketing / Commerce / Geography / Government", "Business Management / Financial Accounting"],
+    olevelSubjects: ["English Language", "Mathematics", "Economics", "Marketing / Commerce / Geography / Business Management", "Government / Financial Accounting"],
     utmeSubjects: "English, Mathematics, Economics + 1 from Geography/Commerce/Marketing/Government/Financial Accounting",
   },
   {
@@ -103,17 +103,17 @@ export const courses: Course[] = [
     utmeCutoff: 170,
     meritCutoff: 41.3,
     catchmentCutoff: 40.0,
-    olevelSubjects: ["English Language", "Mathematics", "Physics / Economics / Geography", "Chemistry", "Biology / Agricultural Science"],
+    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics / Economics / Geography", "Biology / Agricultural Science"],
     utmeSubjects: "English, Physics, Chemistry, Biology or Agric Science",
   },
   {
     name: "Anatomy",
     field: "science",
-    utmeCutoff: 180,
+    utmeCutoff: 200,
     meritCutoff: 59.5,
     catchmentCutoff: 47.8,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology"],
-    utmeSubjects: "English, Physics, Chemistry, Biology",
+    utmeSubjects: "English, Mathematics, Physics, Chemistry",
   },
   {
     name: "Animal Nutrition and Biotechnology",
@@ -121,8 +121,8 @@ export const courses: Course[] = [
     utmeCutoff: 170,
     meritCutoff: 48.5,
     catchmentCutoff: 41.9,
-    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Agricultural Science / Biology", "Physics / Geography / Economics"],
-    utmeSubjects: "English, Chemistry, Physics, Biology or Agric Science",
+    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Biology / Agric Science / Physics", "Animal Husbandry / Geography / Economics"],
+    utmeSubjects: "English, Mathematics, Chemistry, Biology or Agric Science, Animal Husbandry, Physics",
   },
   {
     name: "Animal Production and Health",
@@ -131,12 +131,12 @@ export const courses: Course[] = [
     meritCutoff: 52.4,
     catchmentCutoff: 44.1,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Agricultural Science / Biology / Animal Husbandry"],
-    utmeSubjects: "English, Physics, Chemistry, Agric Science or Biology, Mathematics",
+    utmeSubjects: "English, Physics, Chemistry + 1 from Agric Science/Biology, Mathematics",
   },
   {
     name: "Architecture",
     field: "science",
-    utmeCutoff: 220,
+    utmeCutoff: 190,
     meritCutoff: 64.3,
     catchmentCutoff: 55.0,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry / Biology / Geography / Economics", "Technical Drawing / Building Construction / Fine Art / Land Surveying"],
@@ -145,7 +145,7 @@ export const courses: Course[] = [
   {
     name: "Biochemistry",
     field: "science",
-    utmeCutoff: 210,
+    utmeCutoff: 200,
     meritCutoff: 56.9,
     catchmentCutoff: 51.6,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology"],
@@ -163,7 +163,7 @@ export const courses: Course[] = [
   {
     name: "Chemical Engineering",
     field: "science",
-    utmeCutoff: 180,
+    utmeCutoff: 190,
     meritCutoff: 46.0,
     catchmentCutoff: 45.4,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agricultural Science / Technical Drawing"],
@@ -172,7 +172,7 @@ export const courses: Course[] = [
   {
     name: "Civil Engineering",
     field: "science",
-    utmeCutoff: 220,
+    utmeCutoff: 180,
     meritCutoff: 59.5,
     catchmentCutoff: 49.9,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agric Science / Technical Drawing / Further Mathematics"],
@@ -190,20 +190,20 @@ export const courses: Course[] = [
   {
     name: "Computer Science",
     field: "science",
-    utmeCutoff: 230,
+    utmeCutoff: 185,
     meritCutoff: 63.4,
     catchmentCutoff: 52.3,
-    olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry / Biology / Agric Science / Economics", "Geography / Computer Science"],
-    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Economics/Computer Science/Geography",
+    olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry / Biology / Agric Science / Economics / Geography", "Computer Studies / Computer Science / Data Processing / Nutrition"],
+    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Computer Science/Economics/Geography",
   },
   {
     name: "Consumer and Home Economics",
     field: "science",
-    utmeCutoff: 180,
+    utmeCutoff: 170,
     meritCutoff: 49.4,
     catchmentCutoff: 40.3,
-    olevelSubjects: ["English Language", "Mathematics", "Chemistry / Biology / Physics", "Economics / Agricultural Science / Geography", "Home Economics / Nutrition / Textiles / Garment Making / Catering"],
-    utmeSubjects: "English, Chemistry, Biology, Agric Science, Mathematics or Physics",
+    olevelSubjects: ["English Language", "Mathematics", "Chemistry / Biology / Physics", "Economics / Agricultural Science / Geography", "Home Economics / Tourism / Nutrition / Textiles / Garment Making / Catering"],
+    utmeSubjects: "English, Chemistry, Biology, Agricultural Science, Mathematics/Physics",
   },
   {
     name: "Crop and Environmental Protection",
@@ -212,7 +212,7 @@ export const courses: Course[] = [
     meritCutoff: 43.5,
     catchmentCutoff: 40.0,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agricultural Science / Geography"],
-    utmeSubjects: "English, Physics or Mathematics, Chemistry, Biology or Agric or Geography",
+    utmeSubjects: "English, Physics/Mathematics, Chemistry, Biology/Agric Science/Geography",
   },
   {
     name: "Crop Production and Soil Science",
@@ -226,16 +226,16 @@ export const courses: Course[] = [
   {
     name: "Cyber Security Science",
     field: "science",
-    utmeCutoff: 210,
+    utmeCutoff: 190,
     meritCutoff: 57.5,
     catchmentCutoff: 51.9,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry / Biology / Agric Science / Economics", "Geography / Computer Science"],
-    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Agric/Economics/Geography",
+    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Agric Science/Economics/Geography",
   },
   {
     name: "Earth Science",
     field: "science",
-    utmeCutoff: 170,
+    utmeCutoff: 200,
     meritCutoff: 41.4,
     catchmentCutoff: 40.0,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology / Technical Drawing / Geography"],
@@ -244,7 +244,7 @@ export const courses: Course[] = [
   {
     name: "Electrical & Electronic Engineering",
     field: "science",
-    utmeCutoff: 220,
+    utmeCutoff: 190,
     meritCutoff: 57.6,
     catchmentCutoff: 40.5,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agric Science / Technical Drawing / Further Mathematics"],
@@ -256,7 +256,7 @@ export const courses: Course[] = [
     utmeCutoff: 170,
     meritCutoff: 41.1,
     catchmentCutoff: 40.0,
-    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agricultural Sciences"],
+    olevelSubjects: ["English Language", "Mathematics", "Agricultural Science", "Chemistry", "Physics / Biology"],
     utmeSubjects: "English, Biology or Agric Science, Chemistry, Physics or Mathematics",
   },
   {
@@ -274,8 +274,8 @@ export const courses: Course[] = [
     utmeCutoff: 200,
     meritCutoff: 48.6,
     catchmentCutoff: 40.6,
-    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agricultural Science"],
-    utmeSubjects: "English, Physics, Chemistry, Biology or Agric Science",
+    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agric Science"],
+    utmeSubjects: "English, Chemistry, Physics or Mathematics, Biology/Agric Science",
   },
   {
     name: "Forest Resources Management",
@@ -289,16 +289,16 @@ export const courses: Course[] = [
   {
     name: "Information System",
     field: "science",
-    utmeCutoff: 200,
+    utmeCutoff: 180,
     meritCutoff: 50.4,
     catchmentCutoff: 40.5,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry / Biology / Agric Science / Economics", "Geography / Computer Studies"],
-    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Agric/Economics/Geography/Computer Studies",
+    utmeSubjects: "English, Mathematics, Physics + 1 from Chemistry/Biology/Agric Science/Economics/Geography/Computer Studies",
   },
   {
     name: "Mechanical Engineering",
     field: "science",
-    utmeCutoff: 220,
+    utmeCutoff: 190,
     meritCutoff: 58.9,
     catchmentCutoff: 40.0,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Physics", "Biology / Agricultural Science / Technical Drawing"],
@@ -307,7 +307,7 @@ export const courses: Course[] = [
   {
     name: "Medical Laboratory Science",
     field: "science",
-    utmeCutoff: 240,
+    utmeCutoff: 235,
     meritCutoff: 69.8,
     catchmentCutoff: 66.3,
     olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Biology", "Physics"],
@@ -317,7 +317,7 @@ export const courses: Course[] = [
   {
     name: "Medicine and Surgery",
     field: "science",
-    utmeCutoff: 280,
+    utmeCutoff: 300,
     meritCutoff: 78.3,
     catchmentCutoff: 75.0,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology"],
@@ -327,20 +327,20 @@ export const courses: Course[] = [
   {
     name: "Nursing",
     field: "science",
-    utmeCutoff: 260,
+    utmeCutoff: 250,
     meritCutoff: 69.3,
     catchmentCutoff: 58.4,
     olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology"],
-    olevelNote: "ONE SITTING ONLY",
+    olevelNote: "ONE SITTING ONLY — min 5 credits at one sitting",
     utmeSubjects: "English, Biology, Chemistry, Physics",
   },
   {
     name: "Nutrition and Dietetics",
     field: "science",
-    utmeCutoff: 220,
+    utmeCutoff: 180,
     meritCutoff: 60.1,
     catchmentCutoff: 53.5,
-    olevelSubjects: ["English Language", "Mathematics", "Physics", "Chemistry", "Biology"],
+    olevelSubjects: ["English Language", "Mathematics", "Chemistry", "Biology", "Physics"],
     utmeSubjects: "English, Chemistry, Physics, Biology",
   },
   {
@@ -355,10 +355,10 @@ export const courses: Course[] = [
   {
     name: "Pure and Applied Biology",
     field: "science",
-    utmeCutoff: 180,
+    utmeCutoff: 190,
     meritCutoff: 52.6,
     catchmentCutoff: 44.8,
-    olevelSubjects: ["English Language", "Mathematics", "Biology", "Physics", "Chemistry"],
+    olevelSubjects: ["English Language", "Mathematics", "Biology", "Chemistry", "Physics"],
     utmeSubjects: "English, Biology, Chemistry, Physics or Mathematics",
   },
   {
@@ -409,10 +409,10 @@ export const courses: Course[] = [
   {
     name: "Surveying and Geoinformatics",
     field: "science",
-    utmeCutoff: 200,
+    utmeCutoff: 180,
     meritCutoff: 52.7,
     catchmentCutoff: 43.8,
-    olevelSubjects: ["English Language", "Mathematics", "Physics", "Geography", "Chemistry / Technical Drawing / Fine Arts / Biology / Agric / Economics / Data Processing"],
+    olevelSubjects: ["English Language", "Mathematics", "Physics", "Geography", "Chemistry / Technical Drawing / Fine Arts / Biology / Agric Science / Economics / Data Processing / Elementary Surveying"],
     utmeSubjects: "English, Mathematics, Physics + 1 from Geography/Technical Drawing/Fine Arts/Chemistry/Biology/Economics",
   },
   {
@@ -460,7 +460,7 @@ export const courses: Course[] = [
     meritCutoff: 43.3,
     catchmentCutoff: 40.2,
     olevelSubjects: ["English Language", "History / Government", "CRK / IRK / Literature in English", "Economics / Geography", "Yoruba / Igbo / Hausa"],
-    utmeSubjects: "English + 3 Arts subjects (CRK/IRK, Literature, Economics, Yoruba/Igbo/Hausa)",
+    utmeSubjects: "English + 3 Arts subjects (CRK/IRK, Literature-in-English, Economics, Yoruba/Igbo/Hausa)",
   },
   {
     name: "Library and Information Science",
@@ -474,25 +474,25 @@ export const courses: Course[] = [
   {
     name: "Linguistics and Nigerian Languages",
     field: "art",
-    utmeCutoff: 170,
+    utmeCutoff: 180,
     meritCutoff: 46.9,
     catchmentCutoff: 42.3,
     olevelSubjects: ["English Language", "Yoruba / Igbo / Hausa", "Literature in English", "History / Government / Fine Arts / Music / French", "CRK / IRK / Civic Education"],
-    utmeSubjects: "English + 3 Arts subjects",
+    utmeSubjects: "English + 3 Arts subjects (Literature-in-English/History/Government/Fine Arts/Music/French/Civic Education/Yoruba/Igbo/Hausa)",
   },
   {
     name: "Mass Communication",
     field: "art",
-    utmeCutoff: 220,
+    utmeCutoff: 230,
     meritCutoff: 63.7,
     catchmentCutoff: 58.0,
     olevelSubjects: ["English Language", "Mathematics", "Literature in English / Government / Civic Education", "History / Yoruba / Igbo / Hausa / CRK / IRK / Fine Arts / Music / French", "Economics / Financial Accounting / Commerce / Geography / Marketing"],
-    utmeSubjects: "English + 3 Arts or Social Science subjects",
+    utmeSubjects: "English + 3 from Arts or Social Science subjects",
   },
   {
     name: "Philosophy",
     field: "art",
-    utmeCutoff: 170,
+    utmeCutoff: 180,
     meritCutoff: 48.4,
     catchmentCutoff: 40.5,
     olevelSubjects: ["English Language", "CRK / IRK / History", "Government / Economics / Commerce", "Geography / Literature in English", "Yoruba / Hausa / Igbo"],
@@ -505,30 +505,30 @@ export const courses: Course[] = [
     meritCutoff: 57.6,
     catchmentCutoff: 52.0,
     olevelSubjects: ["English Language", "Mathematics", "Government / History", "CRK / IRK / Literature in English / Yoruba / Igbo / Hausa / French / Music / Fine Arts", "Economics / Geography / Commerce / Marketing / Business Method / Accounting"],
-    utmeSubjects: "English, Government + 2 from Arts or Social Sciences",
+    utmeSubjects: "English, Government + 2 from Arts/Social Sciences",
   },
   {
     name: "Psychology",
     field: "art",
-    utmeCutoff: 170,
+    utmeCutoff: 200,
     meritCutoff: 57.8,
     catchmentCutoff: 40.0,
     olevelSubjects: ["English Language", "Mathematics", "Biology", "Literature in English / History / CRK / IRK / Civic Education / Government / Economics", "Accounting / Commerce / Geography / Marketing / Physics / Chemistry"],
-    utmeSubjects: "English, Biology + 2 Arts/Social Science/Science subjects",
+    utmeSubjects: "English, Biology + 2 Arts, Social Science and Science subjects",
   },
   {
     name: "Sociology",
     field: "art",
-    utmeCutoff: 180,
+    utmeCutoff: 190,
     meritCutoff: 55.8,
     catchmentCutoff: 45.8,
     olevelSubjects: ["English Language", "Mathematics", "Government / Literature in English / History / Yoruba / Igbo / Hausa / CRK / IRK", "Geography / Economics / Commerce / Financial Accounting / Marketing", "Any other Arts or Social Science subject"],
-    utmeSubjects: "English + 3 from Arts or Social Sciences",
+    utmeSubjects: "English + 3 from Arts or Social Sciences (*Mathematics accepted in lieu of one)",
   },
   {
     name: "Theatre Arts",
     field: "art",
-    utmeCutoff: 190,
+    utmeCutoff: 200,
     meritCutoff: 49.6,
     catchmentCutoff: 40.6,
     olevelSubjects: ["English Language", "Literature in English", "Fine Arts / History / Yoruba / Igbo / Hausa", "CRK / IRK / Music / Government", "Economics / Any Arts Subject"],
