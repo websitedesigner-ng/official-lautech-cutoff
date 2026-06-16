@@ -411,26 +411,37 @@ export default function App() {
         </div>
 
         {/* ── Sticky bottom — nav + BJ credit in one seamless block ── */}
-        {step < 4 && !isCalculating && !showCourseMismatch && (
+        {step < 4 && !isCalculating && (
           <div className="sticky bottom-0 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
             <div className="max-w-lg mx-auto px-4 pt-4 pb-2 flex gap-3">
-              {step > 0 && (
+              {showCourseMismatch ? (
                 <Button
-                  variant="outline"
-                  onClick={handleBack}
-                  className="gap-2 border-gray-200 text-gray-500 py-6 px-5 rounded-xl text-sm font-semibold"
+                  onClick={handleMismatchBack}
+                  className="flex-1 gap-2 bg-[#CC1B1B] hover:bg-[#b01717] text-white font-semibold py-6 rounded-xl text-sm shadow-sm transition-all"
                 >
-                  <ChevronLeft size={17} /> Back
+                  <ChevronLeft size={17} /> Select Another Course
                 </Button>
+              ) : (
+                <>
+                  {step > 0 && (
+                    <Button
+                      variant="outline"
+                      onClick={handleBack}
+                      className="gap-2 border-gray-200 text-gray-500 py-6 px-5 rounded-xl text-sm font-semibold"
+                    >
+                      <ChevronLeft size={17} /> Back
+                    </Button>
+                  )}
+                  <Button
+                    onClick={handleNext}
+                    disabled={!canProceed}
+                    className="flex-1 gap-2 bg-[#CC1B1B] hover:bg-[#b01717] text-white font-semibold py-6 rounded-xl text-sm shadow-sm disabled:opacity-40 transition-all"
+                  >
+                    {step === 3 ? "Calculate My Score" : "Continue"}
+                    <ChevronRight size={17} />
+                  </Button>
+                </>
               )}
-              <Button
-                onClick={handleNext}
-                disabled={!canProceed}
-                className="flex-1 gap-2 bg-[#CC1B1B] hover:bg-[#b01717] text-white font-semibold py-6 rounded-xl text-sm shadow-sm disabled:opacity-40 transition-all"
-              >
-                {step === 3 ? "Calculate My Score" : "Continue"}
-                <ChevronRight size={17} />
-              </Button>
             </div>
             <div className="max-w-lg mx-auto px-4 pb-3 text-center">
               <p className="text-[11px] text-gray-400">

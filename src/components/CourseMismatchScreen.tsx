@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, ChevronLeft } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 interface CourseMismatchScreenProps {
   courseName: string;
@@ -83,13 +82,6 @@ export function CourseMismatchScreen({
             />
           </div>
         </div>
-
-        <Button
-          onClick={onBack}
-          className="w-full gap-2 bg-[#CC1B1B] hover:bg-[#b01717] text-white font-semibold py-6 rounded-xl text-sm shadow-sm mt-5"
-        >
-          <ChevronLeft size={17} /> Select Another Course
-        </Button>
       </div>
     </motion.div>
   );
