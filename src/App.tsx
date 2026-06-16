@@ -22,6 +22,7 @@ import { useCalculator } from "@/hooks/useCalculator";
 import { Loader } from "@/components/Loader";
 import { ResultCard } from "@/components/ResultCard";
 import { SplashScreen } from "@/components/SplashScreen";
+import { CourseMismatchScreen } from "@/components/CourseMismatchScreen";
 
 const STEPS = [
   { label: "Field & Status", icon: <Users size={14} /> },
@@ -38,6 +39,7 @@ export default function App() {
   const [selectedCourse, setSelectedCourse] = useState<string>("");
   const [isCalculating, setIsCalculating] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [showCourseMismatch, setShowCourseMismatch] = useState(false);
 
   const calc = useCalculator();
 
@@ -53,6 +55,7 @@ export default function App() {
 
   const jambVal = parseFloat(calc.jambScore);
   const jambValid = !isNaN(jambVal) && jambVal >= MIN_JAMB && jambVal <= 400;
+  const courseUtmeOk = courseObj ? jambVal >= courseObj.utmeCutoff : true;
 
   const canProceed = [
     field !== "" && indigene !== "",
@@ -63,6 +66,10 @@ export default function App() {
   ][step];
 
   const handleNext = () => {
+    if (step === 2 && !courseUtmeOk) {
+      setShowCourseMismatch(true);
+      return;
+    }
     if (step === 3) {
       setIsCalculating(true);
       setTimeout(() => {
@@ -73,6 +80,13 @@ export default function App() {
     } else {
       setStep((s) => s + 1);
     }
+  };
+
+  const handleMismatchBack = () => {
+    setShowCourseMismatch(false);
+    setSelectedCourse("");
+    calc.setJambScore("");
+    setStep(1);
   };
 
   const handleBack = () => {
@@ -86,6 +100,7 @@ export default function App() {
     setIndigene("");
     setSelectedCourse("");
     setShowResult(false);
+    setShowCourseMismatch(false);
     calc.resetAll();
   };
 
@@ -136,7 +151,7 @@ export default function App() {
             </div>
 
             {/* Step progress */}
-            {step < 4 && (
+            {step < 4 && !showCourseMismatch && (
               <div className="space-y-2">
                 <div className="flex justify-between text-xs text-gray-400 font-medium">
                   <span>Step {step + 1} of 4</span>
@@ -158,7 +173,15 @@ export default function App() {
 
             {/* ── Animated content ── */}
             <AnimatePresence mode="wait">
-              {isCalculating ? (
+              {showCourseMismatch ? (
+                <CourseMismatchScreen
+                  key="mismatch"
+                  courseName={courseObj?.name ?? "this course"}
+                  utmeCutoff={courseObj?.utmeCutoff ?? MIN_JAMB}
+                  jambScore={jambVal}
+                  onBack={handleMismatchBack}
+                />
+              ) : isCalculating ? (
                 <motion.div
                   key="loader"
                   initial={{ opacity: 0 }}
@@ -288,7 +311,15 @@ export default function App() {
                           max={400}
                           value={calc.jambScore}
                           onChange={(e) => calc.setJambScore(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && jambValid) {
+                              e.preventDefault();
+                              handleNext();
+                            }
+                          }}
                           placeholder="e.g. 220"
+                          autoFocus
+                          inputMode="numeric"
                           className="w-full text-center text-5xl font-bold text-gray-800 border-2 border-gray-200 rounded-2xl py-7 focus:outline-none focus:border-[#CC1B1B] transition-colors bg-white placeholder:text-gray-200"
                         />
                         {calc.jambScore && !jambValid && (
@@ -380,7 +411,7 @@ export default function App() {
         </div>
 
         {/* ── Sticky bottom — nav + BJ credit in one seamless block ── */}
-        {step < 4 && !isCalculating && (
+        {step < 4 && !isCalculating && !showCourseMismatch && (
           <div className="sticky bottom-0 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
             <div className="max-w-lg mx-auto px-4 pt-4 pb-2 flex gap-3">
               {step > 0 && (
