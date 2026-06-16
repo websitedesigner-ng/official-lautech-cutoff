@@ -3,8 +3,15 @@ import { ScoreRing } from "./ScoreRing";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Share2, Copy, RotateCcw, MessageCircle,
-  TrendingUp, CheckCircle2, XCircle, Info,
+  Share2,
+  Copy,
+  RotateCcw,
+  MessageCircle,
+  TrendingUp,
+  CheckCircle2,
+  XCircle,
+  Info,
+  GraduationCap,
 } from "lucide-react";
 import type { Course, Field } from "@/data/courses";
 
@@ -24,10 +31,17 @@ interface ResultCardProps {
 const WA_GROUP = "https://chat.whatsapp.com/LRQvKF8yzfz2flbXpDP4tS?mode=gi_t";
 
 export function ResultCard({
-  aggregate, jambPoints, olevelPoints,
-  jambScore, olevelSum, course, field, indigene, allCourses, onReset,
+  aggregate,
+  jambPoints,
+  olevelPoints,
+  jambScore,
+  olevelSum,
+  course,
+  field,
+  indigene,
+  allCourses,
+  onReset,
 }: ResultCardProps) {
-
   const isIndigene = indigene === "indigene";
 
   // Use catchment cutoff for Oyo indigenes, merit for others
@@ -49,11 +63,15 @@ export function ResultCard({
     .slice(0, 5);
 
   const nearMissCourses = sameField
-    .filter((c) => !(jambVal >= c.utmeCutoff && aggregate >= getRelevantCutoff(c)))
+    .filter(
+      (c) => !(jambVal >= c.utmeCutoff && aggregate >= getRelevantCutoff(c)),
+    )
     .sort((a, b) => getRelevantCutoff(a) - getRelevantCutoff(b))
     .slice(0, 5);
 
-  const statusLabel = isIndigene ? "Catchment (Oyo Indigene)" : "Merit (Non-Indigene)";
+  const statusLabel = isIndigene
+    ? "Catchment (Oyo Indigene)"
+    : "Merit (Non-Indigene)";
 
   const resultText =
     `🎓 My LAUTECH Screening Score\n\n` +
@@ -67,67 +85,139 @@ export function ResultCard({
     `Join LAUTECH Aspirants Group:\n${WA_GROUP}\n\n` +
     `— BJ OF LAUTECH · +234 906 390 1272`;
 
-  const handleCopy  = () => navigator.clipboard.writeText(resultText);
-  const handleShare = () => window.open(`https://wa.me/?text=${encodeURIComponent(resultText)}`, "_blank");
+  const handleCopy = () => navigator.clipboard.writeText(resultText);
+  const handleShare = () =>
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(resultText)}`,
+      "_blank",
+    );
   const handleGroup = () => window.open(WA_GROUP, "_blank");
 
-  return (
-    <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }} className="space-y-5">
+  const PHONE = "2349063901272";
 
+  const postUtmeMessage = encodeURIComponent(
+    `Hello BJ OF LAUTECH 👋
+
+I want to register for the LAUTECH Post UTME Screening.
+
+My Details:
+• JAMB Score: ${jambScore}
+• Aggregate Score: ${aggregate.toFixed(2)}%
+${course ? `• Intended Course: ${course.name}` : ""}`,
+  );
+
+  const directEntryMessage = encodeURIComponent(
+    `Hello BJ OF LAUTECH 👋
+
+I want to register for the LAUTECH Direct Entry Admission.
+
+My Details:
+• JAMB Score: ${jambScore}
+• Aggregate Score: ${aggregate.toFixed(2)}%
+${course ? `• Intended Course: ${course.name}` : ""}`,
+  );
+
+  const handlePostUtmeRegistration = () =>
+    window.open(`https://wa.me/${PHONE}?text=${postUtmeMessage}`, "_blank");
+
+  const handleDirectEntryRegistration = () =>
+    window.open(`https://wa.me/${PHONE}?text=${directEntryMessage}`, "_blank");
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="space-y-5"
+    >
       {/* Score ring */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <p className="text-center text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">
           Your Screening Aggregate
         </p>
-        <ScoreRing score={aggregate} jambPoints={jambPoints} olevelPoints={olevelPoints} />
+        <ScoreRing
+          score={aggregate}
+          jambPoints={jambPoints}
+          olevelPoints={olevelPoints}
+        />
         <div className="mt-5 bg-gray-50 rounded-xl p-3 flex gap-2">
           <Info size={13} className="text-gray-400 shrink-0 mt-0.5" />
           <p className="text-xs text-gray-400 leading-relaxed">
-            Formula: <span className="font-mono font-semibold text-gray-600">
+            Formula:{" "}
+            <span className="font-mono font-semibold text-gray-600">
               ({jambScore} ÷ 400 × 80) + ({olevelSum} ÷ 30 × 20)
-            </span> = <span className="font-bold text-[#CC1B1B]">{aggregate.toFixed(2)}%</span>
+            </span>{" "}
+            ={" "}
+            <span className="font-bold text-lautech-red">
+              {aggregate.toFixed(2)}%
+            </span>
           </p>
         </div>
       </div>
 
       {/* Chosen course eligibility */}
       {course && cutoff !== null && (
-        <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className={`rounded-2xl border-2 p-5 ${fullyEligible ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}>
+          className={`rounded-2xl border-2 p-5 ${fullyEligible ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}
+        >
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                 Your Chosen Course
               </p>
-              <p className="text-sm font-bold text-gray-800 leading-snug">{course.name}</p>
+              <p className="text-sm font-bold text-gray-800 leading-snug">
+                {course.name}
+              </p>
 
               <div className="mt-2 space-y-1">
                 <p className="text-xs text-gray-500">
-                  Aggregate Cut-off <span className="text-gray-400">({statusLabel})</span>:{" "}
+                  Aggregate Cut-off{" "}
+                  <span className="text-gray-400">({statusLabel})</span>:{" "}
                   <span className="font-bold text-gray-700">{cutoff}%</span>
-                  {" · "}Yours: <span className={`font-bold ${aggregateOk ? "text-green-700" : "text-red-600"}`}>{aggregate.toFixed(2)}%</span>
-                  {" "}
-                  {aggregateOk
-                    ? <span className="text-green-600 text-xs">✓</span>
-                    : <span className="text-red-500 text-xs">✗ Need {(cutoff - aggregate).toFixed(2)} more</span>}
+                  {" · "}Yours:{" "}
+                  <span
+                    className={`font-bold ${aggregateOk ? "text-green-700" : "text-red-600"}`}
+                  >
+                    {aggregate.toFixed(2)}%
+                  </span>{" "}
+                  {aggregateOk ? (
+                    <span className="text-green-600 text-xs">✓</span>
+                  ) : (
+                    <span className="text-red-500 text-xs">
+                      ✗ Need {(cutoff - aggregate).toFixed(2)} more
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
-            <div className={`flex items-center gap-1.5 shrink-0 px-3 py-2 rounded-xl font-bold text-xs ${
-              fullyEligible ? "bg-green-600 text-white" : "bg-red-600 text-white"
-            }`}>
-              {fullyEligible
-                ? <><CheckCircle2 size={13} /> Eligible</>
-                : <><XCircle size={13} /> Not Eligible</>}
+            <div
+              className={`flex items-center gap-1.5 shrink-0 px-3 py-2 rounded-xl font-bold text-xs ${
+                fullyEligible
+                  ? "bg-green-600 text-white"
+                  : "bg-red-600 text-white"
+              }`}
+            >
+              {fullyEligible ? (
+                <>
+                  <CheckCircle2 size={13} /> Eligible
+                </>
+              ) : (
+                <>
+                  <XCircle size={13} /> Not Eligible
+                </>
+              )}
             </div>
           </div>
 
           {/* UTME subjects reminder */}
           <div className="mt-3 pt-3 border-t border-gray-200/60">
             <p className="text-xs text-gray-400 leading-relaxed">
-              <span className="font-semibold text-gray-500">UTME Subjects:</span>{" "}
+              <span className="font-semibold text-gray-500">
+                UTME Subjects:
+              </span>{" "}
               {course.utmeSubjects}
             </p>
           </div>
@@ -139,18 +229,25 @@ export function ResultCard({
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <CheckCircle2 size={15} className="text-green-600" />
-            <h3 className="text-sm font-bold text-gray-800">Courses You Qualify For</h3>
+            <h3 className="text-sm font-bold text-gray-800">
+              Courses You Qualify For
+            </h3>
             <Badge className="ml-auto bg-green-100 text-green-700 border-0 text-xs font-bold">
               {eligibleCourses.length}
             </Badge>
           </div>
           <div className="space-y-2">
             {eligibleCourses.map((c, idx) => (
-              <motion.div key={c.name}
-                initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+              <motion.div
+                key={c.name}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 + idx * 0.07 }}
-                className="flex items-center justify-between px-3 py-3 bg-green-50 rounded-xl border border-green-100">
-                <p className="text-sm font-semibold text-gray-700 truncate flex-1">{c.name}</p>
+                className="flex items-center justify-between px-3 py-3 bg-green-50 rounded-xl border border-green-100"
+              >
+                <p className="text-sm font-semibold text-gray-700 truncate flex-1">
+                  {c.name}
+                </p>
                 <div className="flex items-center gap-1.5 shrink-0 ml-2">
                   <span className="text-xs text-gray-400">cutoff</span>
                   <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
@@ -167,8 +264,10 @@ export function ResultCard({
       {nearMissCourses.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={15} className="text-[#C8A84B]" />
-            <h3 className="text-sm font-bold text-gray-800">Almost There — Next Courses</h3>
+            <TrendingUp size={15} className="text-lautech-gold" />
+            <h3 className="text-sm font-bold text-gray-800">
+              Almost There — Next Courses
+            </h3>
           </div>
           <div className="space-y-2">
             {nearMissCourses.map((c, idx) => {
@@ -176,12 +275,17 @@ export function ResultCard({
               const diff = (needed - aggregate).toFixed(2);
               const jambShort = jambVal < c.utmeCutoff;
               return (
-                <motion.div key={c.name}
-                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                <motion.div
+                  key={c.name}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + idx * 0.07 }}
-                  className="px-3 py-3 bg-amber-50 rounded-xl border border-amber-100">
+                  className="px-3 py-3 bg-amber-50 rounded-xl border border-amber-100"
+                >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-medium text-gray-700 truncate flex-1">{c.name}</p>
+                    <p className="text-sm font-medium text-gray-700 truncate flex-1">
+                      {c.name}
+                    </p>
                     <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full shrink-0">
                       {needed}%
                     </span>
@@ -201,51 +305,113 @@ export function ResultCard({
       {/* Note */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <p className="text-xs text-amber-800 leading-relaxed">
-          <span className="font-bold">Note:</span> Cut-offs are based on{" "}
-          <span className="font-bold">2024/2025 departmental scores</span> and may change for
-          2025/2026. Meeting cut-offs does <span className="font-bold">NOT</span> guarantee
-          admission — O'Level subject combinations must also match. Verify on JAMB CAPS.
+          <span className="font-bold">Note:</span> Meeting cut-offs does{" "}
+          <span className="font-bold">NOT</span> guarantee admission — O'Level
+          subject combinations must also match. Verify on JAMB CAPS.
         </p>
       </div>
 
       {/* Actions */}
       <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" onClick={handleCopy}
-          className="gap-2 border-gray-200 text-gray-600 hover:bg-gray-50 py-6 rounded-xl font-semibold text-sm">
+        <Button
+          variant="outline"
+          onClick={handleCopy}
+          className="gap-2 border-gray-200 text-gray-600 hover:bg-gray-50 py-6 rounded-xl font-semibold text-sm"
+        >
           <Copy size={15} /> Copy Result
         </Button>
-        <Button onClick={handleShare}
-          className="gap-2 bg-green-600 hover:bg-green-700 text-white py-6 rounded-xl font-semibold text-sm">
+        <Button
+          onClick={handleShare}
+          className="gap-2 bg-green-600 hover:bg-green-700 text-white py-6 rounded-xl font-semibold text-sm"
+        >
           <Share2 size={15} /> Share
         </Button>
       </div>
 
+      {/* Registration links */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <GraduationCap size={15} className="text-lautech-red" />
+          <h3 className="text-sm font-bold text-gray-800">
+            Register for Screening
+          </h3>
+        </div>
+        <div className="space-y-2.5">
+          <button
+            onClick={handlePostUtmeRegistration}
+            className="w-full flex items-center justify-between gap-3 bg-[#FDF3DC] hover:bg-[#fbe9bf] transition-colors border border-lautext-lautech-gold/30 rounded-xl px-4 py-3.5"
+          >
+            <div className="text-left">
+              <p className="text-sm font-bold text-gray-800">
+                Post UTME Screening
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Register via WhatsApp
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-lautext-lautech-gold text-white">
+              <MessageCircle size={16} />
+            </div>
+          </button>
+
+          <button
+            onClick={handleDirectEntryRegistration}
+            className="w-full flex items-center justify-between gap-3 bg-red-50 hover:bg-red-100 transition-colors border border-lautext-lautech-red/20 rounded-xl px-4 py-3.5"
+          >
+            <div className="text-left">
+              <p className="text-sm font-bold text-gray-800">
+                Direct Entry Admission
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Register via WhatsApp
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-lautext-lautech-red text-white">
+              <MessageCircle size={16} />
+            </div>
+          </button>
+        </div>
+      </div>
+
       {/* WhatsApp group */}
-      <button onClick={handleGroup}
-        className="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] transition-colors text-white font-bold py-5 rounded-2xl shadow-md text-sm">
+      <button
+        onClick={handleGroup}
+        className="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] transition-colors text-white font-bold py-5 rounded-2xl shadow-md text-sm"
+      >
         <MessageCircle size={19} />
         Join LAUTECH Aspirants WhatsApp Group
       </button>
 
       {/* Reset */}
-      <button onClick={onReset}
-        className="w-full flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors py-3">
+      <button
+        onClick={onReset}
+        className="w-full flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors py-3"
+      >
         <RotateCcw size={14} /> Start Over
       </button>
+
+      
 
       {/* BJ Credit */}
       <div className="text-center pb-2 pt-1 space-y-0.5">
         <p className="text-[11px] text-gray-400">
-          <a href="tel:+2349063901272" className="font-semibold text-[#CC1B1B] hover:underline tracking-wide">
+          <a
+            href="tel:+2349063901272"
+            className="font-semibold text-lautech-red hover:underline tracking-wide"
+          >
             BJ OF LAUTECH
           </a>
           {" · "}
-          <a href="tel:+2349063901272" className="text-gray-400 hover:text-[#CC1B1B] transition-colors">
+          <a
+            href="tel:+2349063901272"
+            className="text-gray-400 hover:text-lautech-red transition-colors"
+          >
             +234 906 390 1272
           </a>
         </p>
         <p className="text-[10px] text-gray-300">
-          Ladoke Akintola University of Technology · Excellence · Integrity · Service
+          Ladoke Akintola University of Technology · Excellence · Integrity ·
+          Service
         </p>
       </div>
     </motion.div>

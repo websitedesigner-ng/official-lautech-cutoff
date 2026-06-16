@@ -15,7 +15,11 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
     const t2 = setTimeout(() => setPhase("out"), 2200);
     // unmount after out animation (400ms)
     const t3 = setTimeout(() => onDone(), 2700);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [onDone]);
 
   return (
@@ -46,14 +50,14 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
             className="text-center"
           >
-            <h1 className="text-3xl font-black tracking-widest text-[#CC1B1B] uppercase">
+            <h1 className="text-3xl font-black tracking-widest text-lautech-red uppercase">
               BJ OF LAUTECH
             </h1>
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-              className="h-0.5 bg-[#C8A84B] rounded-full mt-3 mx-auto w-32 origin-left"
+              className="h-0.5 bg-lautech-gold rounded-full mt-3 mx-auto w-32 origin-left"
             />
           </motion.div>
 
@@ -64,7 +68,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             transition={{ delay: 0.9, duration: 0.5 }}
             className="mt-5 text-xs text-gray-400 tracking-wide"
           >
-            LAUTECH Cut-off Calculator · 2025/2026
+            LAUTECH Cut-off Calculator · 2026/2027
           </motion.p>
 
           {/* Loader dots */}
@@ -77,7 +81,7 @@ export function SplashScreen({ onDone }: SplashScreenProps) {
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className="w-1.5 h-1.5 rounded-full bg-[#CC1B1B]"
+                className="w-1.5 h-1.5 rounded-full bg-lauttext-lautech-red"
                 animate={{ opacity: [0.3, 1, 0.3] }}
                 transition={{
                   duration: 1,
