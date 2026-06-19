@@ -3,6 +3,8 @@ export type Field = "science" | "commercial" | "art";
 export interface Course {
   name: string;
   field: Field;
+  /** Faculty/College key — must match a key in FACULTY_FEES in ResultCard.tsx */
+  faculty: string;
   utmeCutoff: number;
   meritCutoff: number;
   catchmentCutoff: number;
@@ -17,6 +19,7 @@ export const courses: Course[] = [
   {
     name: "Accounting",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 180,
     meritCutoff: 61.9,
     catchmentCutoff: 52.7,
@@ -26,6 +29,7 @@ export const courses: Course[] = [
   {
     name: "Business Administration",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 175,
     meritCutoff: 57.3,
     catchmentCutoff: 46.3,
@@ -35,6 +39,7 @@ export const courses: Course[] = [
   {
     name: "Economics",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 180,
     meritCutoff: 52.1,
     catchmentCutoff: 41.6,
@@ -44,6 +49,7 @@ export const courses: Course[] = [
   {
     name: "Estate Management",
     field: "commercial",
+    faculty: "Faculty of Environmental Sciences",
     utmeCutoff: 170,
     meritCutoff: 49.8,
     catchmentCutoff: 41.9,
@@ -53,6 +59,7 @@ export const courses: Course[] = [
   {
     name: "Hospitality and Tourism Management",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 170,
     meritCutoff: 43.2,
     catchmentCutoff: 40.0,
@@ -62,6 +69,7 @@ export const courses: Course[] = [
   {
     name: "Marketing",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 170,
     meritCutoff: 49.4,
     catchmentCutoff: 40.6,
@@ -71,6 +79,7 @@ export const courses: Course[] = [
   {
     name: "Transport Management",
     field: "commercial",
+    faculty: "Faculty of Management Sciences",
     utmeCutoff: 170,
     meritCutoff: 41.5,
     catchmentCutoff: 40.0,
@@ -82,6 +91,7 @@ export const courses: Course[] = [
   {
     name: "Agricultural Economics",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 40.9,
     catchmentCutoff: 40.0,
@@ -91,6 +101,7 @@ export const courses: Course[] = [
   {
     name: "Agricultural Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 170,
     meritCutoff: 49.1,
     catchmentCutoff: 43.2,
@@ -100,6 +111,7 @@ export const courses: Course[] = [
   {
     name: "Agricultural Extension & Rural Development",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 41.3,
     catchmentCutoff: 40.0,
@@ -109,6 +121,7 @@ export const courses: Course[] = [
   {
     name: "Anatomy",
     field: "science",
+    faculty: "College of Health Sciences – Others",
     utmeCutoff: 200,
     meritCutoff: 59.5,
     catchmentCutoff: 47.8,
@@ -118,6 +131,7 @@ export const courses: Course[] = [
   {
     name: "Animal Nutrition and Biotechnology",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 48.5,
     catchmentCutoff: 41.9,
@@ -127,6 +141,7 @@ export const courses: Course[] = [
   {
     name: "Animal Production and Health",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 52.4,
     catchmentCutoff: 44.1,
@@ -136,6 +151,7 @@ export const courses: Course[] = [
   {
     name: "Architecture",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 190,
     meritCutoff: 64.3,
     catchmentCutoff: 55.0,
@@ -145,6 +161,7 @@ export const courses: Course[] = [
   {
     name: "Biochemistry",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 200,
     meritCutoff: 56.9,
     catchmentCutoff: 51.6,
@@ -154,6 +171,7 @@ export const courses: Course[] = [
   {
     name: "Building",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 170,
     meritCutoff: 57.1,
     catchmentCutoff: 52.2,
@@ -163,6 +181,7 @@ export const courses: Course[] = [
   {
     name: "Chemical Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 190,
     meritCutoff: 46.0,
     catchmentCutoff: 45.4,
@@ -172,6 +191,7 @@ export const courses: Course[] = [
   {
     name: "Civil Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 180,
     meritCutoff: 59.5,
     catchmentCutoff: 49.9,
@@ -181,6 +201,7 @@ export const courses: Course[] = [
   {
     name: "Computer Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 200,
     meritCutoff: 60.8,
     catchmentCutoff: 51.7,
@@ -190,6 +211,7 @@ export const courses: Course[] = [
   {
     name: "Computer Science",
     field: "science",
+    faculty: "Faculty of Computing and Informatics Sciences",
     utmeCutoff: 185,
     meritCutoff: 63.4,
     catchmentCutoff: 52.3,
@@ -199,6 +221,7 @@ export const courses: Course[] = [
   {
     name: "Consumer and Home Economics",
     field: "science",
+    faculty: "Faculty of Food and Consumer Sciences",
     utmeCutoff: 170,
     meritCutoff: 49.4,
     catchmentCutoff: 40.3,
@@ -208,6 +231,7 @@ export const courses: Course[] = [
   {
     name: "Crop and Environmental Protection",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 43.5,
     catchmentCutoff: 40.0,
@@ -217,6 +241,7 @@ export const courses: Course[] = [
   {
     name: "Crop Production and Soil Science",
     field: "science",
+    faculty: "Faculty of Agricultural Sciences",
     utmeCutoff: 170,
     meritCutoff: 43.5,
     catchmentCutoff: 40.0,
@@ -226,6 +251,7 @@ export const courses: Course[] = [
   {
     name: "Cyber Security Science",
     field: "science",
+    faculty: "Faculty of Computing and Informatics Sciences",
     utmeCutoff: 190,
     meritCutoff: 57.5,
     catchmentCutoff: 51.9,
@@ -235,6 +261,7 @@ export const courses: Course[] = [
   {
     name: "Earth Science",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 200,
     meritCutoff: 41.4,
     catchmentCutoff: 40.0,
@@ -244,6 +271,7 @@ export const courses: Course[] = [
   {
     name: "Electrical & Electronic Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 190,
     meritCutoff: 57.6,
     catchmentCutoff: 40.5,
@@ -253,6 +281,7 @@ export const courses: Course[] = [
   {
     name: "Fisheries and Aquaculture",
     field: "science",
+    faculty: "Faculty of Renewable and Natural Resources",
     utmeCutoff: 170,
     meritCutoff: 41.1,
     catchmentCutoff: 40.0,
@@ -262,6 +291,7 @@ export const courses: Course[] = [
   {
     name: "Food Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 170,
     meritCutoff: 42.5,
     catchmentCutoff: 40.0,
@@ -271,6 +301,7 @@ export const courses: Course[] = [
   {
     name: "Food Science",
     field: "science",
+    faculty: "Faculty of Food and Consumer Sciences",
     utmeCutoff: 200,
     meritCutoff: 48.6,
     catchmentCutoff: 40.6,
@@ -280,6 +311,7 @@ export const courses: Course[] = [
   {
     name: "Forest Resources Management",
     field: "science",
+    faculty: "Faculty of Renewable and Natural Resources",
     utmeCutoff: 170,
     meritCutoff: 41.9,
     catchmentCutoff: 40.0,
@@ -289,6 +321,7 @@ export const courses: Course[] = [
   {
     name: "Information System",
     field: "science",
+    faculty: "Faculty of Computing and Informatics Sciences",
     utmeCutoff: 180,
     meritCutoff: 50.4,
     catchmentCutoff: 40.5,
@@ -298,6 +331,7 @@ export const courses: Course[] = [
   {
     name: "Mechanical Engineering",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 190,
     meritCutoff: 58.9,
     catchmentCutoff: 40.0,
@@ -307,6 +341,7 @@ export const courses: Course[] = [
   {
     name: "Medical Laboratory Science",
     field: "science",
+    faculty: "College of Health Sciences – MLS",
     utmeCutoff: 235,
     meritCutoff: 69.8,
     catchmentCutoff: 66.3,
@@ -317,6 +352,7 @@ export const courses: Course[] = [
   {
     name: "Medicine and Surgery",
     field: "science",
+    faculty: "College of Health Sciences – Medicine & Surgery",
     utmeCutoff: 300,
     meritCutoff: 78.3,
     catchmentCutoff: 75.0,
@@ -327,6 +363,7 @@ export const courses: Course[] = [
   {
     name: "Nursing",
     field: "science",
+    faculty: "College of Health Sciences – Nursing",
     utmeCutoff: 250,
     meritCutoff: 69.3,
     catchmentCutoff: 58.4,
@@ -337,6 +374,7 @@ export const courses: Course[] = [
   {
     name: "Nutrition and Dietetics",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 180,
     meritCutoff: 60.1,
     catchmentCutoff: 53.5,
@@ -346,6 +384,7 @@ export const courses: Course[] = [
   {
     name: "Physiology",
     field: "science",
+    faculty: "College of Health Sciences – Others",
     utmeCutoff: 200,
     meritCutoff: 60.1,
     catchmentCutoff: 50.8,
@@ -355,6 +394,7 @@ export const courses: Course[] = [
   {
     name: "Pure and Applied Biology",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 190,
     meritCutoff: 52.6,
     catchmentCutoff: 44.8,
@@ -364,6 +404,7 @@ export const courses: Course[] = [
   {
     name: "Pure and Applied Chemistry",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 170,
     meritCutoff: 48.5,
     catchmentCutoff: 40.5,
@@ -373,6 +414,7 @@ export const courses: Course[] = [
   {
     name: "Pure and Applied Mathematics",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 170,
     meritCutoff: 40.3,
     catchmentCutoff: 40.0,
@@ -382,6 +424,7 @@ export const courses: Course[] = [
   {
     name: "Pure and Applied Physics",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 170,
     meritCutoff: 40.1,
     catchmentCutoff: 40.0,
@@ -391,6 +434,7 @@ export const courses: Course[] = [
   {
     name: "Science Laboratory Technology",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 200,
     meritCutoff: 56.1,
     catchmentCutoff: 41.5,
@@ -400,6 +444,7 @@ export const courses: Course[] = [
   {
     name: "Statistics",
     field: "science",
+    faculty: "Faculty of Pure and Applied Sciences",
     utmeCutoff: 170,
     meritCutoff: 40.7,
     catchmentCutoff: 40.0,
@@ -409,6 +454,7 @@ export const courses: Course[] = [
   {
     name: "Surveying and Geoinformatics",
     field: "science",
+    faculty: "Faculty of Engineering Technology",
     utmeCutoff: 180,
     meritCutoff: 52.7,
     catchmentCutoff: 43.8,
@@ -418,6 +464,7 @@ export const courses: Course[] = [
   {
     name: "Urban and Regional Planning",
     field: "science",
+    faculty: "Faculty of Environmental Sciences",
     utmeCutoff: 170,
     meritCutoff: 41.3,
     catchmentCutoff: 40.0,
@@ -427,6 +474,7 @@ export const courses: Course[] = [
   {
     name: "Wildlife and Ecotourism Management",
     field: "science",
+    faculty: "Faculty of Renewable and Natural Resources",
     utmeCutoff: 170,
     meritCutoff: 40.7,
     catchmentCutoff: 40.0,
@@ -438,6 +486,7 @@ export const courses: Course[] = [
   {
     name: "English and Literary Studies",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 200,
     meritCutoff: 58.9,
     catchmentCutoff: 44.8,
@@ -447,6 +496,7 @@ export const courses: Course[] = [
   {
     name: "Fine and Applied Arts",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 170,
     meritCutoff: 50.6,
     catchmentCutoff: 40.1,
@@ -456,6 +506,7 @@ export const courses: Course[] = [
   {
     name: "History",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 170,
     meritCutoff: 43.3,
     catchmentCutoff: 40.2,
@@ -465,6 +516,7 @@ export const courses: Course[] = [
   {
     name: "Library and Information Science",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 170,
     meritCutoff: 50.1,
     catchmentCutoff: 40.3,
@@ -474,6 +526,7 @@ export const courses: Course[] = [
   {
     name: "Linguistics and Nigerian Languages",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 180,
     meritCutoff: 46.9,
     catchmentCutoff: 42.3,
@@ -483,6 +536,7 @@ export const courses: Course[] = [
   {
     name: "Mass Communication",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 230,
     meritCutoff: 63.7,
     catchmentCutoff: 58.0,
@@ -492,6 +546,7 @@ export const courses: Course[] = [
   {
     name: "Philosophy",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 180,
     meritCutoff: 48.4,
     catchmentCutoff: 40.5,
@@ -501,6 +556,7 @@ export const courses: Course[] = [
   {
     name: "Political Science",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 180,
     meritCutoff: 57.6,
     catchmentCutoff: 52.0,
@@ -510,6 +566,7 @@ export const courses: Course[] = [
   {
     name: "Psychology",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 200,
     meritCutoff: 57.8,
     catchmentCutoff: 40.0,
@@ -519,6 +576,7 @@ export const courses: Course[] = [
   {
     name: "Sociology",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 190,
     meritCutoff: 55.8,
     catchmentCutoff: 45.8,
@@ -528,6 +586,7 @@ export const courses: Course[] = [
   {
     name: "Theatre Arts",
     field: "art",
+    faculty: "Faculty of Arts and Social Sciences",
     utmeCutoff: 200,
     meritCutoff: 49.6,
     catchmentCutoff: 40.6,

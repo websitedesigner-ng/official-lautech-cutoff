@@ -15,8 +15,30 @@ import {
   GraduationCap,
   BarChart3,
   ChevronDown,
+  Banknote,
 } from "lucide-react";
 import type { Course, Field } from "@/data/courses";
+
+// ── School fees by faculty (2025/2026 session) ──────────────────────────────
+type FeeEntry = { indigene: number; nonIndigene: number };
+
+const FACULTY_FEES: Record<string, FeeEntry> = {
+  "Faculty of Agricultural Sciences":               { indigene: 372_400, nonIndigene: 459_900 },
+  "Faculty of Renewable and Natural Resources":     { indigene: 372_400, nonIndigene: 459_900 },
+  "Faculty of Arts and Social Sciences":            { indigene: 316_700, nonIndigene: 404_200 },
+  "Faculty of Engineering Technology":              { indigene: 372_400, nonIndigene: 459_900 },
+  "Faculty of Computing and Informatics Sciences":  { indigene: 330_700, nonIndigene: 418_200 },
+  "Faculty of Environmental Sciences":              { indigene: 316_700, nonIndigene: 404_200 },
+  "Faculty of Pure and Applied Sciences":           { indigene: 344_700, nonIndigene: 432_200 },
+  "Faculty of Food and Consumer Sciences":          { indigene: 344_700, nonIndigene: 432_200 },
+  "Faculty of Management Sciences":                 { indigene: 316_700, nonIndigene: 404_200 },
+  "College of Health Sciences – Medicine & Surgery":{ indigene: 694_700, nonIndigene: 782_200 },
+  "College of Health Sciences – Nursing":           { indigene: 642_200, nonIndigene: 729_700 },
+  "College of Health Sciences – MLS":               { indigene: 642_200, nonIndigene: 729_700 },
+  "College of Health Sciences – Others":            { indigene: 519_800, nonIndigene: 607_200 },
+};
+
+const fmt = (n: number) => "₦" + n.toLocaleString("en-NG");
 
 interface ResultCardProps {
   aggregate: number;
@@ -47,6 +69,13 @@ export function ResultCard({
 }: ResultCardProps) {
   const isIndigene = indigene === "indigene";
   const [showMeritComparison, setShowMeritComparison] = useState(false);
+
+  // ── School fee lookup ────────────────────────────────────────────────────
+  const facultyKey = course ? (course as any).faculty as string | undefined : undefined;
+  const feeEntry = facultyKey ? FACULTY_FEES[facultyKey] ?? null : null;
+  const expectedFee = feeEntry
+    ? isIndigene ? feeEntry.indigene : feeEntry.nonIndigene
+    : null;
 
   // Use catchment cutoff for Oyo indigenes, merit for others (2025/2026 data)
   const getRelevantCutoff = (c: Course) =>
@@ -365,6 +394,70 @@ Please assist me with the registration process.`,
           subject combinations must also match. Verify on JAMB CAPS.
         </p>
       </div>
+
+      {/* Expected school fee */}
+      {course && (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <Banknote size={15} className="text-[#C8A84B]" />
+            <h3 className="text-sm font-bold text-gray-800">
+              Expected School Fee
+            </h3>
+            <span className="ml-auto text-[10px] font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+              2025/2026
+            </span>
+          </div>
+
+          {expectedFee !== null ? (
+            <>
+              <div className="flex items-center justify-between bg-[#FDF3DC] border border-[#C8A84B]/30 rounded-xl px-4 py-4">
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5">
+                    {isIndigene ? "Oyo Indigene" : "Non-Indigene"} · {facultyKey}
+                  </p>
+                  <p className="text-2xl font-black text-gray-800">
+                    {fmt(expectedFee)}
+                  </p>
+                </div>
+                <div className="w-12 h-12 rounded-full bg-[#C8A84B]/15 flex items-center justify-center shrink-0">
+                  <Banknote size={22} className="text-[#C8A84B]" />
+                </div>
+              </div>
+
+              {/* Show both for comparison */}
+              {feeEntry && (
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <div className={`rounded-xl px-3 py-2.5 border ${isIndigene ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-100"}`}>
+                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Indigene</p>
+                    <p className={`text-sm font-bold ${isIndigene ? "text-green-700" : "text-gray-500"}`}>
+                      {fmt(feeEntry.indigene)}
+                    </p>
+                  </div>
+                  <div className={`rounded-xl px-3 py-2.5 border ${!isIndigene ? "bg-red-50 border-red-200" : "bg-gray-50 border-gray-100"}`}>
+                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Non-Indigene</p>
+                    <p className={`text-sm font-bold ${!isIndigene ? "text-[#CC1B1B]" : "text-gray-500"}`}>
+                      {fmt(feeEntry.nonIndigene)}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <p className="text-[10px] text-gray-400 mt-3 text-center leading-relaxed">
+                Fees are subject to change. Confirm with LAUTECH Bursary before payment.
+              </p>
+            </>
+          ) : (
+            <div className="bg-gray-50 rounded-xl px-4 py-4 text-center">
+              <p className="text-xs text-gray-400">
+                Fee data not available for this course yet.
+              </p>
+              <p className="text-[10px] text-gray-300 mt-1">
+                Contact BJ OF LAUTECH for accurate figures.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Actions */}
       <div className="grid grid-cols-2 gap-3">
