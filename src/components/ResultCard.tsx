@@ -53,7 +53,7 @@ interface ResultCardProps {
   onReset: () => void;
 }
 
-const WA_GROUP = "https://chat.whatsapp.com/LRQvKF8yzfz2flbXpDP4tS?mode=gi_t";
+const WA_GROUP = "https://chat.whatsapp.com/LwSOmKIpbrr0qprLeZbRFG?s=cl&p=a&mlu=1";
 
 export function ResultCard({
   aggregate,
